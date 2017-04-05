@@ -2,7 +2,7 @@
 namespace kak\rbac\controllers;
 
 use app\models\User;
-use kak\models\UserAssignment;
+use kak\rbac\models\UserAssignment;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

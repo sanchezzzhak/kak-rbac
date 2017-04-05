@@ -12,13 +12,8 @@ or add
 ```
 "kak/rbac": "dev-master"
 ```
-##### step 2
-run console yii command
-```
-yii migrate --migrationPath=@yii/rbac/migrations
-```
 
-##### step 3
+##### step 2
 add config web.php
 ```
     'authManager' => [
@@ -30,6 +25,15 @@ add config web.php
     ],
 ```
 
+##### step 3
+create tables
+```
+yii migrate --migrationPath=@yii/rbac/migrations
+```
+insert base rbac rules
+```
+yii migrate --migrationPath=@vendor/kak/rbac/migrations
+```
 
 Usage
 -----

@@ -13,6 +13,7 @@ use yii\helpers\Html;
 <?=\kak\widgets\grid\GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
+    'menuColumns' => false,
     'columns' => [
         [
             'class' => 'yii\grid\SerialColumn'

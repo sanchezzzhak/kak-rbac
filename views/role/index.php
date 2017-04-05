@@ -13,13 +13,17 @@ use yii\helpers\Html;
 <?=\kak\widgets\grid\GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
+    'menuColumns' => false,
     'columns' => [
         [
             'class' => 'yii\grid\SerialColumn'
         ],
         'name',
         'description',
-        'ruleName',
+        'ruleName' => [
+            'attribute' => 'ruleName',
+            'filter' => [],
+        ],
         [
             'class' => 'yii\grid\ActionColumn',
             'buttonOptions' => ['class' => 'btn btn-small']

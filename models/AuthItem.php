@@ -291,7 +291,7 @@ class AuthItem extends \yii\base\Model
     {
         $scenarios = parent::scenarios();
         $scenarios[self::SCENARIO_SEARCH] = [
-            'name' , 'description'
+            'name' , 'description' , 'ruleName'
         ];
         return $scenarios;
     }
