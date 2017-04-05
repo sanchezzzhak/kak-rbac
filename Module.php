@@ -16,7 +16,7 @@ class Module extends \yii\base\Module
     /**
      * @var bool
      */
-    public $checkAccessPermissionAdministrateRbac = false;
+    public $checkAccessPermissionAdministrateRbac = true;
 
     /**
      * @var array
