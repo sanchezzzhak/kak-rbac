@@ -16,7 +16,10 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "kak/panel" : "dev-master"
+        "kak/panel" : "dev-master",
+        "kak/select2" : "dev-master",
+        "kak/grid": "dev-master",
+        "kak/itemselect": "dev-master"
     },
     "extra": {
         "asset-installer-paths": {
