@@ -1,6 +1,6 @@
 <?php
-namespace app\modules\rbac\controllers;
-use app\modules\rbac\models\BizRule;
+namespace kak\rbac\controllers;
+use kak\rbac\models\BizRule;
 use yii\web\Controller;
 use Yii;
 use yii\web\NotFoundHttpException;

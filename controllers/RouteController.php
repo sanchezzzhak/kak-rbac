@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\rbac\controllers;
+namespace kak\rbac\controllers;
 
 use yii\base\Model;
 use yii\web\Controller;

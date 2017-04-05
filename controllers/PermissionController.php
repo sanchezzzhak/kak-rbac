@@ -1,6 +1,6 @@
 <?php
-namespace app\modules\rbac\controllers;
-use app\modules\rbac\models\AuthItem;
+namespace kak\rbac\controllers;
+use kak\rbac\models\AuthItem;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;

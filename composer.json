@@ -15,7 +15,8 @@
         }
     ],
     "require": {
-        "yiisoft/yii2": "*"
+        "yiisoft/yii2": "*",
+        "kak/panel" : "dev-master"
     },
     "extra": {
         "asset-installer-paths": {

@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\rbac\controllers\base;
+namespace kak\rbac\controllers\base;
 use yii\web\Controller;
 use Yii;
 use yii\web\ForbiddenHttpException;

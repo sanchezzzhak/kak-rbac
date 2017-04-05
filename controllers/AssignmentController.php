@@ -1,8 +1,8 @@
 <?php
-namespace app\modules\rbac\controllers;
+namespace kak\rbac\controllers;
 
 use app\models\User;
-use app\modules\rbac\models\UserAssignment;
+use kak\models\UserAssignment;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;

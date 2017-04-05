@@ -1,24 +1,38 @@
 RBAC manager for Yii2
-================
-Install
-
-
+=====================
+fork for
+### install
+##### step 1
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
-
 Either run
-
 ```
-php composer.phar require --prefer-dist kak/area "*"
+php composer.phar require --prefer-dist kak/rbac "dev-master"
 ```
-
 or add
-
 ```
-"kak/area": "*"
+"kak/rbac": "dev-master"
 ```
-
+##### step 2
+run console yii command
+```
 yii migrate --migrationPath=@yii/rbac/migrations
+```
 
+##### step 3
+add config web.php
+```
+    'authManager' => [
+        'class' => 'kak\rbac\components\DbManager',
+        'defaultRoles' => [
+            'guest',
+            'user'
+        ],
+    ],
+```
+
+
+Usage
+-----
 modify app\models\User add search methods and consts
 
 ```php
