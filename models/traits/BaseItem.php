@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\rbac\models\traits;
+namespace kak\rbac\models\traits;
 use Yii;
 
 /**

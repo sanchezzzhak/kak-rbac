@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\rbac\models;
+namespace kak\rbac\models;
 use Yii;
 use yii\data\ArrayDataProvider;
 use yii\helpers\ArrayHelper;

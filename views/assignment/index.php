@@ -14,7 +14,7 @@ use yii\helpers\Html;
 ]);
 ?>
 
-<?=\kak\widgets\grid\GridView::widget([
+<?=\yii\grid\GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
     'columns' => \yii\helpers\ArrayHelper::merge($this->context->module->userAttributes,[[

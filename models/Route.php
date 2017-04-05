@@ -1,5 +1,5 @@
 <?php
-namespace app\modules\rbac\models;
+namespace kak\rbac\models;
 
 
 class Route extends \yii\base\Model

@@ -1,10 +1,10 @@
 <?php
 
-namespace app\modules\rbac;
+namespace kak\rbac;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'app\modules\rbac\controllers';
+    public $controllerNamespace = 'kak\rbac\controllers';
 
     public $userAttributes = [
         'username'
@@ -14,7 +14,7 @@ class Module extends \yii\base\Module
 
     public $defaultRoute = 'role/index';
 
-    public $mainLayout = '@app/modules/rbac/views/layouts/main.php';
+    public $mainLayout = '@app/vendor/kak/rbac/views/layouts/main.php';
 
 
     public function init()
