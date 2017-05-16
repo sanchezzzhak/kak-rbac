@@ -1,10 +1,10 @@
 <?php
 namespace kak\rbac\controllers;
 
-use app\models\User;
+
 use kak\rbac\models\UserAssignment;
 use Yii;
-use yii\web\Controller;
+use yii\data\ActiveDataProvider;
 use yii\web\NotFoundHttpException;
 
 class AssignmentController extends base\BaseController
@@ -45,16 +45,28 @@ class AssignmentController extends base\BaseController
 
     public function actionIndex()
     {
-        /** @var User $class */
+        /** @var $model \app\models\User  */
         $model = new $this->userClassName;
-        $provider = $model->search(Yii::$app->request->get());
+        $model->load(Yii::$app->request->get());
+
+        /** @var $query \yii\db\Query */
+        $query = $model::find();
+        foreach ($this->module->userAttributes as $attr){
+            $query->andFilterCompare($attr,$model->getAttribute($attr),'LIKE');
+        }
+
+        $provider = new ActiveDataProvider([
+           'query' => $query
+        ]);
+        $provider->pagination->pageSize = \kak\widgets\grid\GridView::getPaginationSize();
+
         return $this->render('index',compact('model','provider') );
     }
 
 
     protected function findUserModel($id)
     {
-        /** @var User $class */
+        /** @var \app\models\User $class */
         $class = $this->userClassName;
         if (($model = $class::findIdentity($id)) !== null) {
             return $model;

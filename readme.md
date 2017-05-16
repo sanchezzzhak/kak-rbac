@@ -35,76 +35,8 @@ insert base rbac rules
 yii migrate --migrationPath=@vendor/kak/rbac/migrations
 ```
 
-##### step 4
-modify app\models\User add search methods
-
-```php
-
-const SCENARIO_SOCIAL = 'social';
-const SCENARIO_REGISTER = 'register';
-const SCENARIO_CHANGE_USERNAME = 'change username';
-const SCENARIO_REGISTER = 'search';
-
-/**
- * @return array
- */
-public function scenarios()
-{
-    $scenarios = ArrayHelper::merge(parent::scenarios(),[
-        self::SCENARIO_SOCIAL   => [],
-        self::SCENARIO_REGISTER => ['username', 'email', 'password'],
-        self::SCENARIO_CHANGE_USERNAME => ['username', 'password'],
-        self::SCENARIO_SEARCH => ['id','username', 'email', 'status'],
-    ]);
-    return $scenarios;
-}
-
-
-/**
- * @inheritdoc
- */
-public function rules()
-{
-    return [
-        [['username', 'password_hash'], 'required' , 'on' => self::SCENARIO_REGISTER ],
-        [['status', 'email_verify'], 'integer'],
-        [['username'], 'string', 'max' => 30],
-        [['email'],'email'],
-        [['email','username'],'unique'],
-        [['auth_key', 'password_hash', 'password_reset_token', 'email','email_code'], 'string', 'max' => 255],
-    ];
-}
-
-/***
- * Search method the gridView
- * @param $params
- * @param $group
- * @return \yii\data\ActiveDataProvider
- */
-public function search($params, $group = null )
-{
-    $this->scenario = self::SCENARIO_SEARCH;
-    $query = self::find();
-    $dataProvider = new \yii\data\ActiveDataProvider([
-        'query' => $query,
-    ]);
-
-    if (!( $this->load($params) && $this->validate())) {
-        return $dataProvider;
-    }
-
-    $query->andFilterWhere([
-        'id'        => $this->id,
-        'username'  => $this->username,
-        'email'     => $this->email
-    ]);
-
-    return $dataProvider;
-}
-```
-
-#### step 5
-use module admin RBAC
+#### step 4
+using module admin RBAC
 ```
 $config['modules']['rbac'] = [
     'class' => 'kak\rbac\Module',
@@ -118,4 +50,91 @@ $config['modules']['rbac'] = [
     // desable check rbac - default true
     'checkAccessPermissionAdministrateRbac' => false
 ];
+```
+
+Controllers rules base 
+
+Consts
+```php
+
+interface PermissionConst
+{
+    const
+        ItemView   = 'ItemView',
+        ItemUpdate = 'ItemUpdate',
+        ItemCreate = 'ItemCreate',
+        ItemDelete = 'ItemDelete',
+
+        UpdateOwn  = 'UpdateOwn',
+        DeleteOwn  = 'DeleteOwn',
+        AuthorRule  = 'AuthorRule';
+}
+
+
+```
+
+
+```php
+public function behaviors()
+{
+    return [
+        'access' => [
+            'class' => yii\filters\AccessControl::className(),
+            'rules' => [
+                [
+                    'actions' => ['index', 'create'],
+                    'allow' => true,
+                    'roles' => [User::ROLE_ADMIN,User::ROLE_MANAGER],
+                ],[
+                    'actions' => ['update'],
+                    'allow' => true,
+                    'roles' => [User::ROLE_ADMIN, User::ROLE_MANAGER ],
+                ],[
+                    'actions' => ['delete'],
+                    'allow' => true,
+                    'roles' => [User::ROLE_ADMIN],
+                ],[
+                  'actions' => ['about'],
+                  'allow' => true,
+                  'roles' => ["?" , "@"],
+                ]
+            ],
+        ],
+    ];
+}
+
+```
+using context access rule
+```php
+public function behaviors()
+{
+    return [
+        'access' => [
+            'class' => AccessControl::className(),
+            'rules' => [
+                [
+                    'actions' => ['index', 'create'],
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],[
+                    'class' => 'kak\rbac\rules\ContextAccessRule',
+                    'modelClass' => 'app\models\Stream',
+                    'actions' => ['update'],
+                    'roles' => [PermissionConst::UpdateOwn],
+                ],[
+                    'class' => 'kak\rbac\rules\ContextAccessRule',
+                    'modelClass' => 'app\models\Stream',
+                    'actions' => ['delete'],
+                    'roles' => [PermissionConst::DeleteOwn],
+                ]
+            ],
+        ],
+
+    ];
+}
+```
+is current user personal check permission
+```php
+$isAccess = Yii::$app->user->can(PermissionConst::ItemCreate) 
+            && Yii::$app->user->can(User::ROLE_ADMIN);
 ```
