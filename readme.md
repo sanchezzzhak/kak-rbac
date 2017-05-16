@@ -1,5 +1,10 @@
 RBAC manager for Yii2
 =====================
+Dash Preview 
+<img src="https://1.bp.blogspot.com/-rsTMp_RvCNg/WRrYWtma2_I/AAAAAAAAAJ4/HGXkSvPfCq8Eyb4OxfODmy9WtmP6BtpYACLcB/s1600/rbac-preview.png">
+
+
+
 fork for
 ### install
 ##### step 1
