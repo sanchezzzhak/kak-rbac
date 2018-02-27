@@ -58,7 +58,6 @@ class AssignmentController extends base\BaseController
         $provider = new ActiveDataProvider([
            'query' => $query
         ]);
-        $provider->pagination->pageSize = \kak\widgets\grid\GridView::getPaginationSize();
 
         return $this->render('index',compact('model','provider') );
     }

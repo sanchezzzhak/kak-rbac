@@ -6,15 +6,11 @@ use Yii;
 use yii\web\User;
 use yii\di\Instance;
 use yii\base\Module;
-use yii\base\ActionFilter;
+
 use yii\web\ForbiddenHttpException;
 
-class AccessControl extends ActionFilter
+class AccessControl extends \yii\filters\AccessControl
 {
-    /**
-     * @var User User for check access.
-     */
-    private $_user = 'user';
 
     /**
      * @var array List of action that not need to check access.
@@ -22,97 +18,86 @@ class AccessControl extends ActionFilter
     public $allowActions = [];
 
     /**
-     * Get user
-     * @return User
+     * @var array
      */
-    public function getUser()
-    {
-        if (!$this->_user instanceof User) {
-            $this->_user = Instance::ensure($this->_user, User::className());
-        }
-        return $this->_user;
-    }
+    public $params = [];
 
     /**
-     * Set user
-     * @param User|string $user
-     */
-    public function setUser($user)
-    {
-        $this->_user = $user;
-    }
-
-    /**
-     * @inheritdoc
+     * This method is invoked right before an action is to be executed (after all possible filters.)
+     * You may override this method to do last-minute preparation for the action.
+     * @param Action $action the action to be executed.
+     * @return bool whether the action should continue to be executed.
      */
     public function beforeAction($action)
     {
-        $actionId = $action->getUniqueId();
-        $user = $this->getUser();
-        if ($user->can('/' . $actionId)) {
+        $controller = $action->controller;
+        $params = ArrayHelper::getValue($this->params, $action->id, []);
+        if (Yii::$app->user->can('/' . $action->getUniqueId(), $params)) {
             return true;
         }
-        $obj = $action->controller;
         do {
-            if ($user->can('/' . ltrim($obj->getUniqueId() . '/*', '/'))) {
+            if (Yii::$app->user->can('/' . ltrim($controller->getUniqueId() . '/*', '/'))) {
                 return true;
             }
-            $obj = $obj->module;
-        } while ($obj !== null);
-        $this->denyAccess($user);
+            $controller = $controller->module;
+        } while ($controller !== null);
+
+        return parent::beforeAction($action);
     }
 
-    /**
-     * Denies the access of the user.
-     * The default implementation will redirect the user to the login page if he is a guest;
-     * if the user is already logged, a 403 HTTP exception will be thrown.
-     * @param  yii\web\User $user the current user
-     * @throws yii\web\ForbiddenHttpException if the user is already logged in.
-     */
-    protected function denyAccess($user)
-    {
-        if ($user->getIsGuest()) {
-            $user->loginRequired();
-        } else {
-            throw new ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-        }
-    }
 
     /**
-     * @inheritdoc
+     * Returns a value indicating whether the filter is active for the given action.
+     * @param Action $action the action being filtered
+     * @return bool whether the filter is active for the given action.
      */
     protected function isActive($action)
     {
-        $uniqueId = $action->getUniqueId();
-        if ($uniqueId === Yii::$app->getErrorHandler()->errorAction) {
+        if ($this->isErrorPage($action) || $this->isLoginPage($action) || $this->isAllowedAction($action)) {
             return false;
         }
+        return parent::isActive($action);
+    }
 
-        $user = $this->getUser();
-        if ($user->getIsGuest() && is_array($user->loginUrl) && isset($user->loginUrl[0]) && $uniqueId === trim($user->loginUrl[0], '/')) {
-            return false;
+    /**
+     * Returns a value indicating whether a current url equals `errorAction` property of the ErrorHandler component
+     *
+     * @param Action $action
+     * @return bool
+     */
+    private function isErrorPage($action)
+    {
+        if ($action->getUniqueId() === Yii::$app->getErrorHandler()->errorAction) {
+            return true;
         }
+        return false;
+    }
 
+
+    /**
+     * @param $action
+     * @return bool
+     */
+    private function isAllowedAction($action)
+    {
         if ($this->owner instanceof Module) {
-            // convert action uniqueId into an ID relative to the module
-            $mid = $this->owner->getUniqueId();
-            $id = $uniqueId;
-            if ($mid !== '' && strpos($id, $mid . '/') === 0) {
-                $id = substr($id, strlen($mid) + 1);
+            $ownerId = $this->owner->getUniqueId();
+            $id = $action->getUniqueId();
+            if (!empty($ownerId) && strpos($id, $ownerId . '/') === 0) {
+                $id = substr($id, strlen($ownerId) + 1);
             }
         } else {
             $id = $action->id;
         }
-
         foreach ($this->allowActions as $route) {
             if (substr($route, -1) === '*') {
-                $route = rtrim($route, "*");
+                $route = rtrim($route, '*');
                 if ($route === '' || strpos($id, $route) === 0) {
-                    return false;
+                    return true;
                 }
             } else {
                 if ($id === $route) {
-                    return false;
+                    return true;
                 }
             }
         }
@@ -121,6 +106,22 @@ class AccessControl extends ActionFilter
             return false;
         }
 
-        return true;
+        return false;
     }
+
+    /**
+     * Returns a value indicating whether a current url equals `loginUrl` property of the User component
+     *
+     * @param Action $action
+     * @return bool
+     */
+    private function isLoginPage($action)
+    {
+        $loginUrl = trim(Url::to(Yii::$app->user->loginUrl), '/');
+        if (Yii::$app->user->isGuest && $action->getUniqueId() === $loginUrl) {
+            return true;
+        }
+        return false;
+    }
+
 }

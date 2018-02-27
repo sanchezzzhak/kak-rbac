@@ -11,11 +11,11 @@ fork for
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 Either run
 ```
-php composer.phar require --prefer-dist kak/rbac "dev-master"
+php composer.phar require --prefer-dist kak/rbac ">=1.0.1"
 ```
 or add
 ```
-"kak/rbac": "dev-master"
+"kak/rbac": ">=1.0.1"
 ```
 
 ##### step 2
@@ -35,13 +35,13 @@ create tables
 ```
 yii migrate --migrationPath=@yii/rbac/migrations
 ```
-insert base rbac rules
+Insert base rbac rules
 ```
 yii migrate --migrationPath=@vendor/kak/rbac/migrations
 ```
 
 #### step 4
-using module admin RBAC
+Using module admin RBAC
 ```
 $config['modules']['rbac'] = [
     'class' => 'kak\rbac\Module',

@@ -17,7 +17,6 @@ use yii\helpers\Html;
 <?=\kak\widgets\grid\GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
-    'menuColumns' => false,
     'columns' => \yii\helpers\ArrayHelper::merge($this->context->module->userAttributes,[[
         'class' => 'yii\grid\ActionColumn',
         'template' => '{view}',

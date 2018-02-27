@@ -18,7 +18,7 @@
         "yiisoft/yii2": "*",
         "kak/panel" : "dev-master",
         "kak/select2" : "dev-master",
-        "kak/grid": "~1.0.1",
+        "kak/grid": ">=1.0.1",
         "kak/itemselect": "dev-master"
     },
     "extra": {

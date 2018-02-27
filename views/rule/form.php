@@ -24,7 +24,14 @@ use yii\helpers\Html;
 
         <?= $form->field($model, 'name')->textInput(['maxlength' => 64]) ?>
 
-        <?= $form->field($model, 'className')->textInput() ?>
+        <?= $form->field($model, 'className')->textInput()?>
+        <div>
+            Package class list<br>
+            \kak\rbac\rules\GroupRule<br>
+            \kak\rbac\rules\UserRule<br>
+            \kak\rbac\rules\AuthorRule<br>
+            \kak\rbac\rules\ContextAccessRule<br>
+        </div>
 
 
 
