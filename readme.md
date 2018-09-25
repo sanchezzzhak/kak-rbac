@@ -11,11 +11,11 @@ fork for
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 Either run
 ```
-php composer.phar require --prefer-dist kak/rbac ">=1.0.1"
+php composer.phar require --prefer-dist kak/rbac ">=1.0"
 ```
 or add
 ```
-"kak/rbac": ">=1.0.1"
+"kak/rbac": ">=1.0"
 ```
 
 ##### step 2

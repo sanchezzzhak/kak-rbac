@@ -16,20 +16,15 @@
     ],
     "require": {
         "yiisoft/yii2": "*",
-        "kak/panel" : "dev-master",
-        "kak/select2" : "dev-master",
-        "kak/grid": ">=1.0.1",
-        "kak/itemselect": "dev-master"
-    },
-    "extra": {
-        "asset-installer-paths": {
-            "npm-asset-library": "vendor/npm",
-            "bower-asset-library": "vendor/bower"
-        }
+        "kak/panel" : ">=1.0",
+        "kak/select2" : "*",
+        "kak/grid": ">=1.0",
+        "kak/itemselect": ">=1.0"
     },
     "autoload": {
         "psr-4": {
             "kak\\rbac\\": ""
         }
     }
+
 }
