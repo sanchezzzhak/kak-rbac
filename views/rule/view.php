@@ -14,7 +14,7 @@ use yii\widgets\DetailView;
     'data-method' => 'post',
 ]) ?>
 <hr>
-<?= etailView::widget([
+<?= DetailView::widget([
     'model' => $model,
     'attributes' => [
         'name',
