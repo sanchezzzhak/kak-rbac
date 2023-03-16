@@ -1,16 +1,19 @@
 <?php
+
 use yii\helpers\Html;
+use yii\widgets\Pjax;
+use kak\widgets\grid\GridView;
+use kak\widgets\panel\Panel;
 
 ?>
-<?php kak\widgets\panel\Panel::begin(['heading' => false ]);?>
+<?php Panel::begin(['heading' => false]) ?>
 
-<?=Html::a('Create Rule',['create'],['class' => 'btn btn-info']);?><hr>
-<?php
-\yii\widgets\Pjax::begin([
-    'enablePushState'=>false,
-]);
-?>
-<?=\kak\widgets\grid\GridView::widget([
+<?= Html::a(Yii::t('rbac', 'Create new rule'), ['create'], ['class' => 'btn btn-info']) ?>
+    <hr>
+<?php Pjax::begin([
+    'enablePushState' => false,
+]) ?>
+<?= GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
     'columns' => [
@@ -23,7 +26,7 @@ use yii\helpers\Html;
             'buttonOptions' => ['class' => 'btn btn-small']
         ],
     ],
-])?>
-<?php  \yii\widgets\Pjax::end();?>
+]) ?>
+<?php Pjax::end() ?>
 
-<?php kak\widgets\panel\Panel::end();?>
+<?php Panel::end() ?>

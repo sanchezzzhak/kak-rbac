@@ -17,7 +17,7 @@ class RoleController extends base\BaseController
 
     public function actionIndex()
     {
-        $this->view->title = $this->view->params['pageHeaderText'] = 'Список ролей';
+        $this->view->title = $this->view->params['pageHeaderText'] = Yii::t('rbac', 'Roles');
 
         $model = new AuthItem(null);
         $model->type = Item::TYPE_ROLE;
@@ -43,6 +43,7 @@ class RoleController extends base\BaseController
     public function actionCreate()
     {
         $this->view->title =  $this->view->params['pageHeaderText'] = 'Create Role';
+        
         $model = new AuthItem(null);
         $model->type = Item::TYPE_ROLE;
         if($this->saveRole($model)){

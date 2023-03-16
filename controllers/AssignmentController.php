@@ -18,7 +18,10 @@ class AssignmentController extends base\BaseController
     public function init()
     {
         parent::init();
-        $this->view->params['breadcrumbs'][] = ['label' => 'Assignment', 'url' => ['index'] ];
+        $this->view->params['breadcrumbs'][] = [
+            'label' => Yii::t('rbac', 'Assignment'),
+            'url' => ['index']
+        ];
 
         if ($this->userClassName === null) {
             $this->userClassName = Yii::$app->getUser()->identityClass;
@@ -33,6 +36,9 @@ class AssignmentController extends base\BaseController
      */
     public function actionView($id)
     {
+        $this->view->title = Yii::t('rbac', 'View assignment');
+        
+        
         $user = $this->findUserModel($id);
         $model = new UserAssignment(['id' => $id]);
         if(Yii::$app->request->isPost && $model->saveAssign(Yii::$app->request->post('UserAssignment'))){
@@ -48,6 +54,8 @@ class AssignmentController extends base\BaseController
         /** @var $model \app\models\User  */
         $model = new $this->userClassName;
         $model->load(Yii::$app->request->get());
+        
+        $this->view->title = Yii::t('rbac', 'Assignments');
 
         /** @var $query \yii\db\Query */
         $query = $model::find();

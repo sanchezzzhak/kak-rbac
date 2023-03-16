@@ -1,28 +1,30 @@
 <?php
-/**
- * @var $this  \yii\web\View
- */
+
+use yii\web\View;
 use yii\helpers\Html;
+use kak\widgets\panel\Panel;
+use yii\widgets\Pjax;
+use kak\widgets\grid\GridView;
+use yii\helpers\ArrayHelper;
 
+/**
+ * @var View $this
+ */
 ?>
-<?php kak\widgets\panel\Panel::begin(['heading' => false ]);?>
+<?php Panel::begin(['heading' => false]) ?>
 
-<?=Html::a('Create Role',['create'],['class' => 'btn btn-info']);?><hr>
-<?php
-\yii\widgets\Pjax::begin([
-    'enablePushState'=>false,
-]);
-?>
+<?php Pjax::begin([
+    'enablePushState' => false,
+]) ?>
 
-<?=\kak\widgets\grid\GridView::widget([
+<?= GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
-    'columns' => \yii\helpers\ArrayHelper::merge($this->context->module->userAttributes,[[
+    'columns' => ArrayHelper::merge($this->context->module->userAttributes, [[
         'class' => 'yii\grid\ActionColumn',
         'template' => '{view}',
         'buttonOptions' => ['class' => 'btn btn-small']
     ]])
-])?>
-<?php  \yii\widgets\Pjax::end();?>
-
-<?php kak\widgets\panel\Panel::end();?>
+]) ?>
+<?php Pjax::end() ?>
+<?php Panel::end() ?>

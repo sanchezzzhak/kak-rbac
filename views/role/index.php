@@ -1,16 +1,19 @@
 <?php
+
 use yii\helpers\Html;
+use kak\widgets\panel\Panel;
+use yii\widgets\Pjax;
+use kak\widgets\grid\GridView;
 
 ?>
-<?php kak\widgets\panel\Panel::begin(['heading' => false ]);?>
-
-<?=Html::a('Create Role',['create'],['class' => 'btn btn-info']);?><hr>
+<?php Panel::begin(['heading' => false]) ?>
+<?= Html::a(Yii::t('rbac', 'Create new role'), ['create'], ['class' => 'btn btn-info']) ?>
+    <hr>
 <?php
-\yii\widgets\Pjax::begin([
-    'enablePushState'=>false,
-]);
-?>
-<?=\kak\widgets\grid\GridView::widget([
+Pjax::begin([
+    'enablePushState' => false,
+]) ?>
+<?= GridView::widget([
     'dataProvider' => $provider,
     'filterModel' => $model,
     'columns' => [
@@ -28,7 +31,6 @@ use yii\helpers\Html;
             'buttonOptions' => ['class' => 'btn btn-small']
         ],
     ],
-])?>
-<?php  \yii\widgets\Pjax::end();?>
-
-<?php kak\widgets\panel\Panel::end();?>
+]) ?>
+<?php Pjax::end() ?>
+<?php Panel::end() ?>

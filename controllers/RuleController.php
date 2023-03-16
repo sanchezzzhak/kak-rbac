@@ -1,5 +1,7 @@
 <?php
+
 namespace kak\rbac\controllers;
+
 use kak\rbac\models\BizRule;
 use yii\web\Controller;
 use Yii;
@@ -11,7 +13,7 @@ class RuleController extends base\BaseController
     public function init()
     {
         parent::init();
-        $this->view->params['breadcrumbs'][] = ['label' => 'Rules', 'url' => ['index'] ];
+        $this->view->params['breadcrumbs'][] = ['label' => Yii::t('rbac', 'Rules'), 'url' => ['index']];
     }
 
     /**
@@ -19,10 +21,11 @@ class RuleController extends base\BaseController
      */
     public function actionIndex()
     {
+        $this->view->title = Yii::t('rbac', 'Rules');
         $model = new BizRule(null);
         $provider = $model->search(Yii::$app->request->get());
 
-        return $this->render('index',compact('model','provider'));
+        return $this->render('index', compact('model', 'provider'));
     }
 
     /**
@@ -30,19 +33,21 @@ class RuleController extends base\BaseController
      */
     public function actionCreate()
     {
+        $this->view->title = Yii::t('rbac', 'Create new rule');
         $model = new BizRule(null);
-        if($this->saveRule($model)){
-            return $this->redirect(['view' , 'id' => $model->name ]);
+        if ($this->saveRule($model)) {
+            return $this->redirect(['view', 'id' => $model->name]);
         }
-        return $this->render('form',compact('model'));
+        return $this->render('form', compact('model'));
     }
 
     /**
-     * @param  string $id
+     * @param string $id
      * @return mixed
      */
     public function actionUpdate($id)
     {
+        $this->view->title = Yii::t('rbac', 'Update rule');
         $model = $this->findRuleModelById($id);
         if ($this->saveRule($model)) {
             return $this->redirect(['view', 'id' => $model->name]);
@@ -52,6 +57,7 @@ class RuleController extends base\BaseController
 
     public function actionView($id)
     {
+        $this->view->title = Yii::t('rbac', 'View rule');
         $model = $this->findRuleModelById($id);
         return $this->render('view', compact('model'));
     }

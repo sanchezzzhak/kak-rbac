@@ -23,8 +23,9 @@ class Module extends \yii\base\Module
      */
     public $userAttributes = [
         'username'
-
     ];
+
+    public $language;
 
     /**
      * @var string
@@ -38,8 +39,20 @@ class Module extends \yii\base\Module
 
     public function init()
     {
+        $app = \Yii::$app;
+
+        if (null !== $this->language) {
+            $app->language = $this->language;
+        }
+
+        if (!isset($app->get('i18n')->translations['rbac*'])) {
+            $app->get('i18n')->translations['rbac*'] = [
+                'class'    => 'yii\i18n\PhpMessageSource',
+                'basePath' => __DIR__ . '/messages',
+            ];
+        }
+
         parent::init();
 
-        // custom initialization code goes here
     }
 }

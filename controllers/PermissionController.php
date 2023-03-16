@@ -14,11 +14,16 @@ class PermissionController extends base\BaseController
     public function init()
     {
         parent::init();
-        $this->view->params['breadcrumbs'][] = ['label' => 'Permission', 'url' => ['index'] ];
+        $this->view->params['breadcrumbs'][] = [
+            'label' => Yii::t('rbac', 'Permissions'),
+            'url' => ['index']
+        ];
     }
 
     public function actionIndex()
     {
+        $this->view->title = Yii::t('rbac', 'Permissions');
+
         $model = new AuthItem(null);
         $model->type = Item::TYPE_PERMISSION;
         $provider = $model->search(Yii::$app->request->get());
@@ -29,6 +34,8 @@ class PermissionController extends base\BaseController
 
     public function actionCreate()
     {
+        $this->view->title = Yii::t('rbac', 'Create new permission');
+
         $model = new AuthItem(null);
         $model->type = Item::TYPE_PERMISSION;
         if($this->savePermission($model)){
@@ -63,6 +70,8 @@ class PermissionController extends base\BaseController
 
     public function actionUpdate($id)
     {
+        $this->view->title = Yii::t('rbac', 'Update permission');
+
         $model  = $this->findPermissionModelById($id);
         if($this->savePermission($model)){
             return $this->redirect(['view' , 'id' => $model->name ]);
@@ -86,6 +95,8 @@ class PermissionController extends base\BaseController
 
     public function actionView($id)
     {
+        $this->view->title = Yii::t('rbac', 'View permission');
+        
         $model = $this->findPermissionModelById($id);
         if(Yii::$app->request->isPost && $model->saveAssign(Yii::$app->request->post('AuthItem'))){
             return $this->redirect(['view','id' => $id]);

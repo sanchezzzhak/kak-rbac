@@ -1,47 +1,59 @@
 <?php
+
 use yii\helpers\Html;
+use yii\widgets\DetailView;
+use kak\widgets\itemselect\ItemSelect;
+use kak\widgets\panel\Panel;
+use yii\widgets\ActiveForm;
 
 ?>
-<?php kak\widgets\panel\Panel::begin(['heading' => false ]);?>
-
-<hr>
-<h3>View User</h3>
+<?php Panel::begin(['heading' => false]); ?>
+    <h3><?=Yii::t('rbac', 'User')?></h3>
 <?php
-echo \yii\widgets\DetailView::widget([
+echo DetailView::widget([
     'model' => $user,
     'attributes' => $this->context->module->userAttributes,
 ]);
 ?>
     <hr>
-    <?php
-    $templateSelectItem =
-        '<div class="row">
-                <div class="col-xs-4">    <b>{%=o.name%}</b> </div>
-                <div class="col-xs-8">
-                   <div>{%=o.description%}</div>
-                </div>
-            </div>';
-    ?>
-    <?php $form = \yii\widgets\ActiveForm::begin()?>
-    <?=Html::submitButton(Yii::t('rbac', 'Save'),['class' => 'btn btn-success']) ?>
-    <?php echo $form->field($model,'rolesChildren')->widget(kak\widgets\itemselect\ItemSelect::className(),[
-        'labelFrom' => 'Доступно',
-        'labelTo' => 'Выбрано',
+<?php
+$templateSelectItem =
+    '<div class="row">
+        <div class="col-xs-4"> <b>{%=o.name%}</b> </div>
+        <div class="col-xs-8">
+           <div>{%=o.description%}</div>
+        </div>
+    </div>';
+?>
+<?php $form = ActiveForm::begin() ?>
+
+<?= Html::submitButton(Yii::t('rbac', 'Save'), ['class' => 'btn btn-success']) ?>
+
+<?php echo $form->field($model, 'rolesChildren')
+    ->widget(ItemSelect::className(), [
+        'labelFrom' => Yii::t('rbac', 'Available'),
+        'labelTo' => Yii::t('rbac', 'Selected'),
         'items' => Yii::$app->getAuthManager()->getRoles(),
         'itemAttributeId' => 'name',
-        'templateItem' => $templateSelectItem
-    ])->label('<h3>Roles</h3>');?>
-
-    <?php echo  $form->field($model,'permissionsChildren')->widget(kak\widgets\itemselect\ItemSelect::className(),[
-        'labelFrom' => 'Доступно',
-        'labelTo' => 'Выбрано',
+        'templateItem' => $templateSelectItem,
+        'options' => [
+            'class' => 'hide-control'
+        ],
+    ])->label(sprintf('<h3>%s</h3>', Yii::t('rbac', 'Roles'))) ?>
+<div class="clearfix"></div>
+<?php echo $form->field($model, 'permissionsChildren')
+    ->widget(ItemSelect::className(), [
+        'labelFrom' => Yii::t('rbac', 'Available'),
+        'labelTo' => Yii::t('rbac', 'Selected'),
         'items' => Yii::$app->getAuthManager()->getPermissions(),
         'itemAttributeId' => 'name',
-        'templateItem' => $templateSelectItem
-    ])->label('<h3>Permissions</h3>');?>
+        'templateItem' => $templateSelectItem,
+        'options' => [
+             'class' => 'hide-control'
+        ],
+    ])->label(sprintf('<h3 class="">%s</h3>', Yii::t('rbac', 'Permissions'))) ?>
 
 
+<?php ActiveForm::end() ?>
 
-    <?php \yii\widgets\ActiveForm::end()?>
-
-<?php kak\widgets\panel\Panel::end();?>
+<?php Panel::end() ?>
