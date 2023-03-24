@@ -22,13 +22,36 @@ class GroupRule extends Rule implements IGroupRole
      */
     public function execute($user, $item, $params)
     {
-        if (!Yii::$app->user->isGuest) {
+      if (!Yii::$app->user->isGuest) {
+
             /** @var \app\models\User $user */
             $user = Yii::$app->user->identity;
             $role = $user->role;
-            return ($role === $item->name);
+
+            if ($item->name === self::ROLE_ADMIN) {
+                return $role === $item->name || $role === self::ROLE_SUPER_ADMIN;
+            }
+
+            if ($item->name === self::ROLE_MANAGER) {
+                return $role === $item->name
+                    || $role === self::ROLE_SUPER_ADMIN
+                    || $role === self::ROLE_USER
+                    || $role === self::ROLE_ADMIN;
+
+            }
+
+            if ($item->name === self::ROLE_USER) {
+                return $role === $item->name
+                    || $role === self::ROLE_SUPER_ADMIN
+                    || $role === self::ROLE_ADMIN
+                    || $role === self::ROLE_MANAGER;
+            }
+
+            if ($role === $item->name) {
+                return true;
+            }
+
         }
-        
         return false;
     }
 }
